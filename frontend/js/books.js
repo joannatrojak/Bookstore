@@ -10,4 +10,5 @@ document.addEventListener('DOMContentLoaded', function()
             description: form.elements[1].value
         });
     });
+    
 }); 
