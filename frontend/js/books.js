@@ -18,8 +18,7 @@ function bookAdd(singleBook)
                     '</li>';
     var list = document.querySelector('#booksList');
     list.innerHTML += newBook;
-    var description = document.querySelector('div panel-heading'); 
-    console.log(description); 
+    
 }
 document.addEventListener('DOMContentLoaded', function()
 {
@@ -27,11 +26,31 @@ document.addEventListener('DOMContentLoaded', function()
     $.get("http://localhost/Bookstore/rest/rest.php/book", function(data)
         {
             var bookList = data.success;
+             
             bookList.forEach(function(singleBook)
             {
                bookAdd(singleBook); 
-               
+
             });
+            var bookDescription = $('.panel-heading button:nth-child(3)'); 
+            console.log(bookDescription[0].getAttribute('data-id')); 
+            console.log(bookDescription.length); 
+            for (var i = 0; i<bookDescription.length; i++)
+            {
+                bookDescription[i].addEventListener('click', function(e)
+                {
+                    var id = this.getAttribute('data-id');
+                    $.get('http://localhost/Bookstore/rest/rest.php/book/' + id, function(data)
+                    {
+                        var description = data.success[0]['description']; 
+                        var element = $('panel panel-default div:nth-child(3)');
+                        console.log(element); 
+                        
+                    }); 
+                }); 
+                 
+            }
+            
         });
     
      
