@@ -33,6 +33,9 @@ document.addEventListener('DOMContentLoaded', function()
 
             });
             var bookDescription = $('.panel-heading button:nth-child(3)'); 
+            
+            //console.log(bookElement); 
+            
             console.log(bookDescription[0].getAttribute('data-id')); 
             console.log(bookDescription.length); 
             for (var i = 0; i<bookDescription.length; i++)
@@ -40,13 +43,17 @@ document.addEventListener('DOMContentLoaded', function()
                 bookDescription[i].addEventListener('click', function(e)
                 {
                     var id = this.getAttribute('data-id');
+                    var bookElement = $('.list-group-item div:nth-child(2)'); 
+                     
                     $.get('http://localhost/Bookstore/rest/rest.php/book/' + id, function(data)
                     {
                         var description = data.success[0]['description']; 
-                        var element = $('panel panel-default div:nth-child(3)');
-                        console.log(element); 
+                        var singleElement = bookElement[id];
+                        singleElement.style.display = "block"; 
+                        console.log(singleElement); 
                         
                     }); 
+      
                 }); 
                  
             }
