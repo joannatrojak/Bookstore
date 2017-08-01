@@ -36,8 +36,8 @@ document.addEventListener('DOMContentLoaded', function()
             
             //console.log(bookElement); 
             
-            console.log(bookDescription[0].getAttribute('data-id')); 
-            console.log(bookDescription.length); 
+            //console.log(bookDescription[0].getAttribute('data-id')); 
+            //console.log(bookDescription.length); 
             for (var i = 0; i<bookDescription.length; i++)
             {
                 bookDescription[i].addEventListener('click', function(e)
@@ -50,18 +50,48 @@ document.addEventListener('DOMContentLoaded', function()
                         var description = data.success[0]['description']; 
                         var singleElement = bookElement[id];
                         singleElement.style.display = "block"; 
-                        console.log(singleElement); 
-                        
+                        console.log(singleElement);   
                     }); 
-      
-                }); 
-                 
+                });     
             }
             
+            var deleteBook = $('.panel-heading button:nth-child(2)');
+            //console.log(deleteBook); 
+            console.log(deleteBook[0].getAttribute('data-id')); 
+            console.log(deleteBook.length); 
+            
+            for (var i = 1; i<deleteBook.length; i++)
+            {
+                deleteBook[i].addEventListener('click', function(e)
+                {
+                    var id = this.getAttribute('data-id'); 
+                    console.log(id);
+                    var elementToDelete = document.querySelectorAll('.list-group-item');
+                    //console.log(elementToDelete[id]); 
+                    console.log(elementToDelete.remove()); 
+                     
+                    
+                    
+                    $.ajax({
+                        url: 'http://localhost/Bookstore/rest/rest.php/book/' + id,
+                        type: "DELETE", 
+                        success: function(data)
+                        {
+                            console.log(data['success']);
+                            console.log(elementToDelete.remove()); 
+                            
+                            
+                        }
+                    }); 
+                    
+                    
+                    //var elementToDelete = $('#booksList'); 
+                    //console.log(elementToDelete); 
+                }); 
+            }
+            
+            
         });
-    
-     
-
     form.addEventListener('submit', function(e)
     {
  
