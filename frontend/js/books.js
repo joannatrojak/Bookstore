@@ -26,10 +26,19 @@ document.addEventListener('DOMContentLoaded', function()
     $.get("http://localhost/Bookstore/rest/rest.php/book", function(data)
         {
             var bookList = data.success;
+            var select = document.querySelector('select'); 
+            //console.log(select); 
              
             bookList.forEach(function(singleBook)
             {
-               bookAdd(singleBook); 
+               bookAdd(singleBook);
+               var option = document.createElement('option'); 
+               var title = singleBook['title'];  
+               document.querySelector('select').appendChild(option);
+               //var option = document.querySelectorAll('option'); 
+               var text = document.createTextNode(title); 
+               console.log(option.appendChild(text)); 
+               console.log(text); 
 
             });
             var bookDescription = $('.panel-heading button:nth-child(3)'); 
@@ -68,7 +77,7 @@ document.addEventListener('DOMContentLoaded', function()
                     console.log(id);
                     var elementToDelete = document.querySelectorAll('.list-group-item');
                     //console.log(elementToDelete[id]); 
-                    console.log(elementToDelete.remove()); 
+                    //console.log(elementToDelete.remove()); 
                      
                     
                     
