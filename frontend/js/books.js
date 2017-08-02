@@ -34,15 +34,28 @@ document.addEventListener('DOMContentLoaded', function()
                bookAdd(singleBook);
                var option = document.createElement('option'); 
                var title = singleBook['title'];  
-               document.querySelector('select').appendChild(option);
-               //var option = document.querySelectorAll('option'); 
+               var id = singleBook['id']; 
+               //console.log(id); 
+               var optionAdd = document.querySelector('select').appendChild(option);
+               optionAdd.value = id; 
                var text = document.createTextNode(title); 
-               console.log(option.appendChild(text)); 
-               console.log(text); 
+               option.appendChild(text); 
+               //console.log(text); 
 
             });
-            var bookDescription = $('.panel-heading button:nth-child(3)'); 
+            //var select = document.querySelector('select'); 
+            var optionSearch = document.querySelectorAll('option'); 
             
+            for (var i = 0; i<optionSearch.length; i++)
+            {
+                optionSearch[i].addEventListener('click', function()
+                {
+                    var value = optionSearch[i].value; 
+                    console.log(value); 
+                }); 
+            }
+            
+            var bookDescription = $('.panel-heading button:nth-child(3)'); 
             //console.log(bookElement); 
             
             //console.log(bookDescription[0].getAttribute('data-id')); 
