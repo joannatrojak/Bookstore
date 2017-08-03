@@ -41,18 +41,26 @@ document.addEventListener('DOMContentLoaded', function()
                var text = document.createTextNode(title); 
                option.appendChild(text); 
                //console.log(text); 
+               
 
             });
             //var select = document.querySelector('select'); 
             var optionSearch = document.querySelectorAll('option'); 
+            console.log(optionSearch.length); 
             
-            for (var i = 0; i<optionSearch.length; i++)
+            for (var i = 1; i<optionSearch.length; i++)
             {
-                optionSearch[i].addEventListener('click', function()
+                var elementToEdit = optionSearch[i]; 
+                console.log(elementToEdit); 
+                
+                elementToEdit.addEventListener('click', function(e)
                 {
-                    var value = optionSearch[i].value; 
-                    console.log(value); 
-                }); 
+                   var value = $('#bookEditSelect option:selected').val(); 
+                   $.get("http://localhost/Bookstore/rest/rest.php/book/" + value, function(data)
+                   {
+                      var form = $('#bookEdit').show(); 
+                   }); 
+                });  
             }
             
             var bookDescription = $('.panel-heading button:nth-child(3)'); 
@@ -79,8 +87,8 @@ document.addEventListener('DOMContentLoaded', function()
             
             var deleteBook = $('.panel-heading button:nth-child(2)');
             //console.log(deleteBook); 
-            console.log(deleteBook[0].getAttribute('data-id')); 
-            console.log(deleteBook.length); 
+            //console.log(deleteBook[0].getAttribute('data-id')); 
+            //console.log(deleteBook.length); 
             
             for (var i = 1; i<deleteBook.length; i++)
             {
