@@ -46,19 +46,31 @@ document.addEventListener('DOMContentLoaded', function()
             });
             //var select = document.querySelector('select'); 
             var optionSearch = document.querySelectorAll('option'); 
-            console.log(optionSearch.length); 
+            //console.log(optionSearch.length); 
             
             for (var i = 1; i<optionSearch.length; i++)
             {
                 var elementToEdit = optionSearch[i]; 
-                console.log(elementToEdit); 
+                //console.log(elementToEdit); 
                 
                 elementToEdit.addEventListener('click', function(e)
                 {
                    var value = $('#bookEditSelect option:selected').val(); 
                    $.get("http://localhost/Bookstore/rest/rest.php/book/" + value, function(data)
                    {
+                      var id = data.success[0]['id']; 
+                      var title = data.success[0]['title']; 
+                      var description = data.success[0]['description']; 
                       var form = $('#bookEdit').show(); 
+                      document.getElementById('id').value = id; 
+                      var titleInput = $('#bookEdit div:nth-child(3)').find('input').val(title); 
+                      var descriptionInput = $('#bookEdit div:nth-child(4)').find('textarea').val(description);
+                      var buttonEdit = $('#bookEdit button:nth-child(5)'); 
+                      console.log(buttonEdit); 
+                      buttonEdit.submit(function(e)
+                      {
+                         
+                      }); 
                    }); 
                 });  
             }
