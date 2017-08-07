@@ -67,9 +67,10 @@ document.addEventListener('DOMContentLoaded', function()
                       var descriptionInput = $('#bookEdit div:nth-child(4)').find('textarea').val(description);
                       var buttonEdit = $('#bookEdit button:nth-child(5)'); 
                       console.log(buttonEdit); 
-                      buttonEdit.submit(function(e)
+                      buttonEdit.submit(function(event)
                       {
-                         
+                        event.preventDefault(); 
+                        // not working 
                       }); 
                    }); 
                 });  
