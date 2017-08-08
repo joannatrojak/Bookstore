@@ -8,14 +8,23 @@ function authorAdd(singleAuthor)
                     '</div>'+
                     '</div>'+
                     '</li>-->'; 
-    var list = document.querySelector('authorsList');
+    var list = document.querySelector('#authorsList'); 
     list.innerHTML += newAuthor; 
 }
 document.addEventListener('DOMContentLoaded', function()
 {
-    var authorAdd = document.querySelector('#authorAdd'); 
-    
-    authorAdd.addEventListener('submit', function(e)
+    var authorAddelement = document.querySelector('#authorAdd'); 
+    var authorListElement = document.querySelector('#authorsList'); 
+    console.log(authorListElement); 
+    $.get('http://localhost/Bookstore/rest/rest.php/author', function(data)
+        {
+            var authorList = data.success; 
+            authorList.forEach(function(singleAuthor)
+            {
+                authorAdd(singleAuthor);  
+            });
+        }); 
+    authorAddelement.addEventListener('submit', function(e)
     {
         e.preventDefault(); 
         
