@@ -4,10 +4,10 @@ function authorAdd(singleAuthor)
                     '<div class="panel panel-default">'+
                     '<div class="panel-heading"><span class="authorTitle">'+singleAuthor.name+' '+singleAuthor.surname+'</span>'+
                     '<button data-id="'+singleAuthor.id+'" class="btn btn-danger pull-right btn-xs btn-author-remove">'+
-                    'class="fa fa-trash"></i></button>'+
+                    '<i class="fa fa-trash"></i></button>'+
                     '</div>'+
                     '</div>'+
-                    '</li>-->'; 
+                    '</li>'; 
     var list = document.querySelector('#authorsList'); 
     list.innerHTML += newAuthor; 
 }
