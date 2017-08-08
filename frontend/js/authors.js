@@ -13,7 +13,7 @@ function authorAdd(singleAuthor)
 }
 document.addEventListener('DOMContentLoaded', function()
 {
-    var authorAddelement = document.querySelector('#authorAdd'); 
+    var authorAddElement = document.querySelector('#authorAdd'); 
     var authorListElement = document.querySelector('#authorsList'); 
     console.log(authorListElement); 
     $.get('http://localhost/Bookstore/rest/rest.php/author', function(data)
@@ -23,8 +23,19 @@ document.addEventListener('DOMContentLoaded', function()
             {
                 authorAdd(singleAuthor);  
             });
+            
+            var deleteAuthor = $('.panel-heading button:nth-child(2)');
+            var domElement = document.querySelectorAll('.list-group-item'); 
+            console.log(domElement); 
+            for (var i = 0; i< deleteAuthor.length; i++)
+            {
+                deleteAuthor[i].addEventListener('click', function(e)
+                {
+                    
+                }); 
+            }
         }); 
-    authorAddelement.addEventListener('submit', function(e)
+    authorAddElement.addEventListener('submit', function(e)
     {
         e.preventDefault(); 
         
