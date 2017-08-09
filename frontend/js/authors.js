@@ -32,9 +32,18 @@ document.addEventListener('DOMContentLoaded', function()
             {
                 deleteAuthor[i].addEventListener('click', function(e)
                 {
-                    var attribute = this.getAttribute('data-id');
-                    var elementToDelete = domElement[attribute - 1]; 
+                    var id = this.getAttribute('data-id');
+                    var elementToDelete = domElement[id - 1]; 
                     elementToDelete.remove(); 
+                    
+                    $.ajax({
+                        url: 'http://localhost/Bookstore/rest/rest.php/author/' + id, 
+                        type: "DELETE", 
+                        success: function(data)
+                        {
+                            console.log(data['success']); 
+                        }
+                    }); 
                 }); 
             }
         }); 
