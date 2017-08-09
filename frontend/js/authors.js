@@ -22,6 +22,12 @@ document.addEventListener('DOMContentLoaded', function()
             authorList.forEach(function(singleAuthor)
             {
                 authorAdd(singleAuthor);  
+                var option = document.createElement('option'); 
+                var authorname = singleAuthor['name']; 
+                var authorsurname = singleAuthor['surname']; 
+                var author = authorname + " " + authorsurname; 
+                var select = document.querySelector('select').appendChild(option).innerHTML += author; 
+                
             });
             
             var deleteAuthor = $('.panel-heading button:nth-child(2)');
