@@ -26,12 +26,15 @@ document.addEventListener('DOMContentLoaded', function()
             
             var deleteAuthor = $('.panel-heading button:nth-child(2)');
             var domElement = document.querySelectorAll('.list-group-item'); 
-            console.log(domElement); 
+            console.log(domElement.length);
+            console.log(deleteAuthor.length); 
             for (var i = 0; i< deleteAuthor.length; i++)
             {
                 deleteAuthor[i].addEventListener('click', function(e)
                 {
-                    
+                    var attribute = this.getAttribute('data-id');
+                    var elementToDelete = domElement[attribute - 1]; 
+                    elementToDelete.remove(); 
                 }); 
             }
         }); 
