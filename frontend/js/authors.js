@@ -25,10 +25,36 @@ document.addEventListener('DOMContentLoaded', function()
                 var option = document.createElement('option'); 
                 var authorname = singleAuthor['name']; 
                 var authorsurname = singleAuthor['surname']; 
+                var authorid = singleAuthor['id']; 
                 var author = authorname + " " + authorsurname; 
-                var select = document.querySelector('select').appendChild(option).innerHTML += author; 
-                
+                var select = document.querySelector('select').appendChild(option); 
+                select.value = authorid; 
+                select.innerHTML += author; 
             });
+            
+            var optionSearch = document.querySelectorAll('select'); 
+            
+            for (var i = 0; i<optionSearch.length; i++)
+            {
+                var elementToEdit = optionSearch[i]; 
+                
+                elementToEdit.addEventListener('click', function(e)
+                {
+                    var value = $('#authorEditSelect option:selected').val(); 
+                    
+                    $.get('http://localhost/Bookstore/rest/rest.php/author/' + value, function(data)
+                    {
+                        var id = data.success[0]['id']; 
+                        var name = data.success[0]['name']; 
+                        var surname = data.success[0]['surname']; 
+                        var authorEdit = $('#authorEdit').show(); 
+                        
+                        document.getElementById('id').value = id; 
+                        
+
+                    }); 
+                }); 
+            }
             
             var deleteAuthor = $('.panel-heading button:nth-child(2)');
             var domElement = document.querySelectorAll('.list-group-item'); 
