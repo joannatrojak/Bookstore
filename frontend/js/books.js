@@ -35,14 +35,24 @@ document.addEventListener('DOMContentLoaded', function()
                var option = document.createElement('option'); 
                var title = singleBook['title'];  
                var id = singleBook['id']; 
-               //console.log(id); 
-               var optionAdd = document.querySelector('select').appendChild(option);
-               optionAdd.value = id; 
-               var text = document.createTextNode(title); 
-               option.appendChild(text); 
-               //console.log(text); 
-               
-
+               var authorId = singleBook['author_id']; 
+               $.get('http://localhost/Bookstore/rest/rest.php/author', function(data)
+               {
+                   var authorList = data.success; 
+                   authorList.forEach(function(singleAuthor)
+                   {
+                       var id = singleAuthor['id']; 
+                       
+                       if (id === authorId)
+                       {
+                           var name = singleAuthor['name']; 
+                           var surname = singleAuthor['surname']; 
+                           var authorSelect = document.querySelector('#author_id'); 
+                           var text = name + ' ' + surname;
+                       }
+                       
+                   }); 
+               }); 
             });
             //var select = document.querySelector('select'); 
             var optionSearch = document.querySelectorAll('option'); 
