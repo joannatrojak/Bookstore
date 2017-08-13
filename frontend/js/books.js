@@ -27,7 +27,6 @@ document.addEventListener('DOMContentLoaded', function()
         {
             var bookList = data.success;
             var select = document.querySelector('select'); 
-            //console.log(select); 
              
             bookList.forEach(function(singleBook)
             {
@@ -49,6 +48,8 @@ document.addEventListener('DOMContentLoaded', function()
                            var surname = singleAuthor['surname']; 
                            var authorSelect = document.querySelector('#author_id'); 
                            var text = name + ' ' + surname;
+                           var node = authorSelect.appendChild(option); 
+                           node.innerHTML = text; 
                        }
                        
                    }); 
