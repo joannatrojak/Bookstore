@@ -22,6 +22,7 @@ function bookAdd(singleBook)
 }
 document.addEventListener('DOMContentLoaded', function()
 {
+    //load books 
     var form = document.querySelector('#bookAdd'); 
     $.get("http://localhost/Bookstore/rest/rest.php/book", function(data)
         {
@@ -50,15 +51,12 @@ document.addEventListener('DOMContentLoaded', function()
                            var text = name + ' ' + surname;
                            var node = authorSelect.appendChild(option); 
                            node.innerHTML = text; 
-                       }
-                       
-                   }); 
+                       }   
+                   });
+                   
                }); 
             });
-            //var select = document.querySelector('select'); 
-            var optionSearch = document.querySelectorAll('option'); 
-            //console.log(optionSearch.length); 
-            
+            var optionSearch = $('#bookEditSelect');
             for (var i = 1; i<optionSearch.length; i++)
             {
                 var elementToEdit = optionSearch[i]; 
@@ -137,25 +135,28 @@ document.addEventListener('DOMContentLoaded', function()
                             
                         }
                     }); 
-                    
-                    
-                    //var elementToDelete = $('#booksList'); 
-                    //console.log(elementToDelete); 
                 }); 
             }
             
             
         });
+        //add book 
     form.addEventListener('submit', function(e)
     {
  
         e.preventDefault(); 
         var title = form.elements[0].value; 
-        var description = form.elements[1].value; 
+        var description = form.elements[2].value; 
+        var id = $('#author_id option:selected').val(); 
+        console.log(id); 
+        /**
         $.post('http://localhost/Bookstore/rest/rest.php/book', {
             title: title, 
-            description: description
+            author_id: id, 
+            description: description 
+            
         });
+        */
         $.get("http://localhost/Bookstore/rest/rest.php/book", function(data)
         {
             var bookList = data.success;

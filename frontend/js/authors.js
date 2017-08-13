@@ -13,6 +13,7 @@ function authorAdd(singleAuthor)
 }
 document.addEventListener('DOMContentLoaded', function()
 {
+    //load authors 
     var authorAddElement = document.querySelector('#authorAdd'); 
     var authorListElement = document.querySelector('#authorsList'); 
     console.log(authorListElement); 
@@ -31,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function()
                 select.value = authorid; 
                 select.innerHTML += author; 
             });
-            
+            //author edit selected 
             var optionSearch = document.querySelectorAll('select'); 
             
             for (var i = 0; i<optionSearch.length; i++)
@@ -50,12 +51,10 @@ document.addEventListener('DOMContentLoaded', function()
                         var authorEdit = $('#authorEdit').show(); 
                         
                         document.getElementById('id').value = id; 
-                        
-
                     }); 
                 }); 
             }
-            
+            //delete Author 
             var deleteAuthor = $('.panel-heading button:nth-child(2)');
             var domElement = document.querySelectorAll('.list-group-item'); 
             console.log(domElement.length);
@@ -79,6 +78,7 @@ document.addEventListener('DOMContentLoaded', function()
                 }); 
             }
         }); 
+        //add author 
     authorAddElement.addEventListener('submit', function(e)
     {
         e.preventDefault(); 
