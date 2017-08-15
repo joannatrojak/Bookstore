@@ -35,9 +35,9 @@ document.addEventListener('DOMContentLoaded', function()
                var title = singleBook['title'];
                var id = singleBook['id'];
                var authorId = singleBook['author_id'];
-               var select = document.getElementById('bookEditSelect').appendChild(optionBook);
-               select.innerHTML += title;
-               select.value = id;
+               var selectBook = document.getElementById('bookEditSelect').appendChild(optionBook);
+               selectBook.innerHTML += title;
+               selectBook.value = id;
 
                $.get('http://localhost/Bookstore/rest/rest.php/author', function(data)
                {
@@ -60,34 +60,32 @@ document.addEventListener('DOMContentLoaded', function()
 
                });
             });
-            var optionSearch = $('#bookEditSelect');
-            for (var i = 1; i<optionSearch.length; i++)
-            {
-                var elementToEdit = optionSearch[i];
-                //console.log(elementToEdit);
+            var bookEditform = $('#bookEdit');
+            var bookEdit = $('#bookEditSelect option');
+            console.log(bookEdit.length);
 
-                elementToEdit.addEventListener('click', function(e)
+            for (var i = 1; i< bookEdit.length; i++)
+            {
+                var elementToEdit = bookEdit[i];
+
+                elementToEdit.addEventListener('click', function (e)
                 {
-                   var value = $('#bookEditSelect option:selected').val();
-                   $.get("http://localhost/Bookstore/rest/rest.php/book/" + value, function(data)
-                   {
-                      var id = data.success[0]['id'];
-                      var title = data.success[0]['title'];
-                      var description = data.success[0]['description'];
-                      var form = $('#bookEdit').show();
-                      document.getElementById('id').value = id;
-                      var titleInput = $('#bookEdit div:nth-child(3)').find('input').val(title);
-                      var descriptionInput = $('#bookEdit div:nth-child(4)').find('textarea').val(description);
-                      var buttonEdit = $('#bookEdit button:nth-child(5)');
-                      console.log(buttonEdit);
-                      buttonEdit.submit(function(event)
-                      {
-                        event.preventDefault();
-                        // not working
-                      });
-                   });
+                    bookEditform.show();
+                    var value = $('#bookEditSelect option:selected').val();
+
+                    $.get('http://localhost/Bookstore/rest/rest.php/book/' + value, function (data) {
+                        var author_id = data.success[0]['author_id'];
+                        $.get('http://localhost/Bookstore/rest/rest.php/author/' + author_id, function (data) {
+                            var name = data.success[0]['name'];
+                            var surname = data.success[0]['surname'];
+                            var author = name + surname;
+                            var authoroption = document.createElement('option');
+                            
+                        }); 
+                    });
                 });
             }
+
             
             var bookDescription = $('.panel-heading button:nth-child(3)'); 
 
