@@ -49,7 +49,8 @@ document.addEventListener('DOMContentLoaded', function()
                            var surname = singleAuthor['surname']; 
                            var authorSelect = document.querySelector('#author_id'); 
                            var text = name + ' ' + surname;
-                           var node = authorSelect.appendChild(option); 
+                           var node = authorSelect.appendChild(option);
+                           node.value = id;
                            node.innerHTML = text; 
                        }   
                    });
@@ -145,18 +146,18 @@ document.addEventListener('DOMContentLoaded', function()
     {
  
         e.preventDefault(); 
-        var title = form.elements[0].value; 
-        var description = form.elements[2].value; 
-        var id = $('#author_id option:selected').val(); 
-        console.log(id); 
-        /**
+        var title = form.querySelector('#title').value;
+        var author = $('#author_id option:selected').val();
+        var description = form.querySelector('#description').value;
+
+
         $.post('http://localhost/Bookstore/rest/rest.php/book', {
             title: title, 
             author_id: id, 
             description: description 
             
         });
-        */
+        
         $.get("http://localhost/Bookstore/rest/rest.php/book", function(data)
         {
             var bookList = data.success;
