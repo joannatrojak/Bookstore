@@ -109,37 +109,25 @@ document.addEventListener('DOMContentLoaded', function()
             }
             
             var deleteBook = $('.panel-heading button:nth-child(2)');
-            //console.log(deleteBook); 
-            //console.log(deleteBook[0].getAttribute('data-id')); 
-            //console.log(deleteBook.length); 
-            
-            for (var i = 1; i<deleteBook.length; i++)
+            var domElement = document.querySelectorAll('.list-group-item');
+            for (var i = 0; i<deleteBook.length; i++)
             {
                 deleteBook[i].addEventListener('click', function(e)
                 {
-                    var id = this.getAttribute('data-id'); 
-                    console.log(id);
-                    var elementToDelete = document.querySelectorAll('.list-group-item');
-                    //console.log(elementToDelete[id]); 
-                    //console.log(elementToDelete.remove()); 
-                     
-                    
-                    
+                    var id = this.getAttribute('data-id');
+                    var elementToDelete = domElement[id - 1];
+                    elementToDelete.remove();
+
                     $.ajax({
                         url: 'http://localhost/Bookstore/rest/rest.php/book/' + id,
                         type: "DELETE", 
                         success: function(data)
                         {
                             console.log(data['success']);
-                            console.log(elementToDelete.remove()); 
-                            
-                            
                         }
                     }); 
                 }); 
             }
-            
-            
         });
         //add book 
     form.addEventListener('submit', function(e)
@@ -153,11 +141,11 @@ document.addEventListener('DOMContentLoaded', function()
 
         $.post('http://localhost/Bookstore/rest/rest.php/book', {
             title: title, 
-            author_id: id, 
+            author_id: author,
             description: description 
             
         });
-        
+
         $.get("http://localhost/Bookstore/rest/rest.php/book", function(data)
         {
             var bookList = data.success;

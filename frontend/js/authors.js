@@ -56,9 +56,7 @@ document.addEventListener('DOMContentLoaded', function()
             }
             //delete Author 
             var deleteAuthor = $('.panel-heading button:nth-child(2)');
-            var domElement = document.querySelectorAll('.list-group-item'); 
-            console.log(domElement.length);
-            console.log(deleteAuthor.length); 
+            var domElement = document.querySelectorAll('.list-group-item');
             for (var i = 0; i< deleteAuthor.length; i++)
             {
                 deleteAuthor[i].addEventListener('click', function(e)
