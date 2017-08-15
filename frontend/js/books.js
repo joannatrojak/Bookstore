@@ -27,70 +27,70 @@ document.addEventListener('DOMContentLoaded', function()
     $.get("http://localhost/Bookstore/rest/rest.php/book", function(data)
         {
             var bookList = data.success;
-            var select = document.querySelector('select'); 
-             
             bookList.forEach(function(singleBook)
             {
                bookAdd(singleBook);
-               var option = document.createElement('option'); 
-               var title = singleBook['title'];  
-               var id = singleBook['id']; 
-               var authorId = singleBook['author_id']; 
+               var optionAuthor = document.createElement('option');
+               var optionBook = document.createElement('option');
+               var title = singleBook['title'];
+               var id = singleBook['id'];
+               var authorId = singleBook['author_id'];
+               var select = document.getElementById('bookEditSelect').appendChild(optionBook);
+               select.innerHTML += title;
+               select.value = id;
+
                $.get('http://localhost/Bookstore/rest/rest.php/author', function(data)
                {
-                   var authorList = data.success; 
+                   var authorList = data.success;
                    authorList.forEach(function(singleAuthor)
                    {
-                       var id = singleAuthor['id']; 
-                       
+                       var id = singleAuthor['id'];
+
                        if (id === authorId)
                        {
-                           var name = singleAuthor['name']; 
-                           var surname = singleAuthor['surname']; 
-                           var authorSelect = document.querySelector('#author_id'); 
+                           var name = singleAuthor['name'];
+                           var surname = singleAuthor['surname'];
+                           var authorSelect = document.querySelector('#author_id');
                            var text = name + ' ' + surname;
-                           var node = authorSelect.appendChild(option);
+                           var node = authorSelect.appendChild(optionAuthor);
                            node.value = id;
-                           node.innerHTML = text; 
-                       }   
+                           node.innerHTML = text;
+                       }
                    });
-                   
-               }); 
+
+               });
             });
             var optionSearch = $('#bookEditSelect');
             for (var i = 1; i<optionSearch.length; i++)
             {
-                var elementToEdit = optionSearch[i]; 
-                //console.log(elementToEdit); 
-                
+                var elementToEdit = optionSearch[i];
+                //console.log(elementToEdit);
+
                 elementToEdit.addEventListener('click', function(e)
                 {
-                   var value = $('#bookEditSelect option:selected').val(); 
+                   var value = $('#bookEditSelect option:selected').val();
                    $.get("http://localhost/Bookstore/rest/rest.php/book/" + value, function(data)
                    {
-                      var id = data.success[0]['id']; 
-                      var title = data.success[0]['title']; 
-                      var description = data.success[0]['description']; 
-                      var form = $('#bookEdit').show(); 
-                      document.getElementById('id').value = id; 
-                      var titleInput = $('#bookEdit div:nth-child(3)').find('input').val(title); 
+                      var id = data.success[0]['id'];
+                      var title = data.success[0]['title'];
+                      var description = data.success[0]['description'];
+                      var form = $('#bookEdit').show();
+                      document.getElementById('id').value = id;
+                      var titleInput = $('#bookEdit div:nth-child(3)').find('input').val(title);
                       var descriptionInput = $('#bookEdit div:nth-child(4)').find('textarea').val(description);
-                      var buttonEdit = $('#bookEdit button:nth-child(5)'); 
-                      console.log(buttonEdit); 
+                      var buttonEdit = $('#bookEdit button:nth-child(5)');
+                      console.log(buttonEdit);
                       buttonEdit.submit(function(event)
                       {
-                        event.preventDefault(); 
-                        // not working 
-                      }); 
-                   }); 
-                });  
+                        event.preventDefault();
+                        // not working
+                      });
+                   });
+                });
             }
             
             var bookDescription = $('.panel-heading button:nth-child(3)'); 
-            //console.log(bookElement); 
-            
-            //console.log(bookDescription[0].getAttribute('data-id')); 
-            //console.log(bookDescription.length); 
+
             for (var i = 0; i<bookDescription.length; i++)
             {
                 bookDescription[i].addEventListener('click', function(e)
