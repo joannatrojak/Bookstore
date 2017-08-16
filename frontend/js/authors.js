@@ -5,6 +5,9 @@ function authorAdd(singleAuthor)
                     '<div class="panel-heading"><span class="authorTitle">'+singleAuthor.name+' '+singleAuthor.surname+'</span>'+
                     '<button data-id="'+singleAuthor.id+'" class="btn btn-danger pull-right btn-xs btn-author-remove">'+
                     '<i class="fa fa-trash"></i></button>'+
+        '            <button data-id="' + singleAuthor.id + '"' +
+        '                    class="btn btn-primary pull-right btn-xs btn-book-show-description"><i' +
+        '                    class="fa fa-info-circle"></i>' +
                     '</div>'+
                     '</div>'+
                     '</li>'; 
