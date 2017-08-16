@@ -9,6 +9,7 @@ function authorAdd(singleAuthor)
         '                    class="btn btn-primary pull-right btn-xs btn-book-show-description"><i' +
         '                    class="fa fa-info-circle"></i></button>' +
                     '</div>'+
+                    '<ul class="authorBooksList"></ul>'+
                     '</div>'+
                     '</li>'; 
     var list = document.querySelector('#authorsList'); 
@@ -63,7 +64,20 @@ document.addEventListener('DOMContentLoaded', function()
             {
                 infobutton[i].addEventListener('click', function (e) {
                     var id = this.getAttribute('data-id');
+                    $.get('http://localhost/Bookstore/rest/rest.php/author/' + id, function(data)
+                    {
+                        var authorBooksList = document.querySelector('.authorBooksList');
+                        console.log(authorBooksList);
+                        var books = data.success[0]['books'];
+                        books.forEach(function (singleBook) {
+                            var title = singleBook['title'];
+                            var li = document.createElement('li');
+                            var list = authorBooksList.appendChild(li);
+                            list.innerHTML += title;
+                            authorBooksList.style.display = "block";
+                        });
 
+                    });
                 })
             }
             //delete Author 
