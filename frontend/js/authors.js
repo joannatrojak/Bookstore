@@ -7,7 +7,7 @@ function authorAdd(singleAuthor)
                     '<i class="fa fa-trash"></i></button>'+
         '            <button data-id="' + singleAuthor.id + '"' +
         '                    class="btn btn-primary pull-right btn-xs btn-book-show-description"><i' +
-        '                    class="fa fa-info-circle"></i>' +
+        '                    class="fa fa-info-circle"></i></button>' +
                     '</div>'+
                     '</div>'+
                     '</li>'; 
@@ -56,6 +56,15 @@ document.addEventListener('DOMContentLoaded', function()
                         document.getElementById('id').value = id; 
                     }); 
                 }); 
+            }
+            //show author's books
+            var infobutton = $('.panel-heading button:nth-child(3)');
+            for (var i = 0; i< infobutton.length; i++)
+            {
+                infobutton[i].addEventListener('click', function (e) {
+                    var id = this.getAttribute('data-id');
+
+                })
             }
             //delete Author 
             var deleteAuthor = $('.panel-heading button:nth-child(2)');
