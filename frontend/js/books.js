@@ -62,7 +62,6 @@ document.addEventListener('DOMContentLoaded', function()
             });
             var bookEditform = $('#bookEdit');
             var bookEdit = $('#bookEditSelect option');
-            console.log(bookEdit.length);
 
             for (var i = 1; i< bookEdit.length; i++)
             {
@@ -74,6 +73,13 @@ document.addEventListener('DOMContentLoaded', function()
                     var value = $('#bookEditSelect option:selected').val();
 
                     $.get('http://localhost/Bookstore/rest/rest.php/book/' + value, function (data) {
+                        var id = data.success[0]['id'];
+                        var title = data.success[0]['title'];
+                        var description = data.success[0]['description'];
+                        var idSelector = document.querySelector('#id');
+                        idSelector.value = id;
+                        var textarea = $('#bookEdit').find('textarea').val(description);
+                        var input = $('#bookEdit').find('#title').val(title);
                         $.get('http://localhost/Bookstore/rest/rest.php/author', function (data) {
                             var authorList = data.success;
 
@@ -86,14 +92,25 @@ document.addEventListener('DOMContentLoaded', function()
                                 authorEditId.innerHTML += author;
                                 authorEditId.value = singleAuthor['id'];
                             })
-
-
-                        }); 
+                        });
                     });
                 });
             }
+            document.querySelector('#bookEdit').addEventListener('submit', function(e){
+                e.preventDefault();
+                var title = $('#bookEdit').find('#title').val();
+                var description = $('#bookEdit').find('textarea').val();
+                var author_id = $('#author_id_edit option:selected').val();
+                var book_id = $('#bookEdit').find('#id').val();
 
-            
+                $.ajax({
+                    url: 'http://localhost/Bookstore/rest/rest.php/book/' + book_id,
+                    type: "PUT",
+                    success: function (data) {
+                        console.log(data.success);
+                    }
+                });
+            });
             var bookDescription = $('.panel-heading button:nth-child(3)'); 
 
             for (var i = 0; i<bookDescription.length; i++)
