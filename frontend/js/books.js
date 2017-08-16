@@ -74,13 +74,20 @@ document.addEventListener('DOMContentLoaded', function()
                     var value = $('#bookEditSelect option:selected').val();
 
                     $.get('http://localhost/Bookstore/rest/rest.php/book/' + value, function (data) {
-                        var author_id = data.success[0]['author_id'];
-                        $.get('http://localhost/Bookstore/rest/rest.php/author/' + author_id, function (data) {
-                            var name = data.success[0]['name'];
-                            var surname = data.success[0]['surname'];
-                            var author = name + surname;
-                            var authoroption = document.createElement('option');
-                            
+                        $.get('http://localhost/Bookstore/rest/rest.php/author', function (data) {
+                            var authorList = data.success;
+
+                            authorList.forEach(function (singleAuthor) {
+                                var name = singleAuthor['name'];
+                                var surname = singleAuthor['surname'];
+                                var author = name +' '+ surname;
+                                var optionAuthor = document.createElement('option');
+                                var authorEditId = document.querySelector('#author_id_edit').appendChild(optionAuthor);
+                                authorEditId.innerHTML += author;
+                                authorEditId.value = singleAuthor['id'];
+                            })
+
+
                         }); 
                     });
                 });
