@@ -29,6 +29,7 @@ function addForm(form){
         author_id: author_id,
         description: description  
     });
+    getBooks();
          
 }
 function getBooks(){
@@ -38,14 +39,15 @@ function getBooks(){
             bookList.forEach(function(singleBook)
             {
                bookAdd(singleBook); 
-               
+               editAuthor(singleBook);
             });
+            editForm();
         }); 
 }
 function authorAdd(singleAuthor){
-    var author = '<option>'+singleAuthor.name+' '+singleAuthor.surname+'</option>';
     authorList = document.querySelector('#bookAdd select').appendChild(document.createElement('option'));
     authorList.innerHTML += singleAuthor.name + ' ' +singleAuthor.surname; 
+    authorList.value = singleAuthor.id;
     
 }
 function getAuthor(){
@@ -53,9 +55,51 @@ function getAuthor(){
     {
         var authorList = data.success; 
         authorList.forEach(function(singleAuthor){
-            authorAdd(singleAuthor)
+            authorAdd(singleAuthor);
+            authorEdit(singleAuthor);
         });
     });
+}
+function editAuthor(singleBook){
+    var authorList = document.querySelector('#bookEditSelect').appendChild(document.createElement('option'));
+    authorList.innerHTML += singleBook.title;
+    authorList.value = singleBook.id;    
+}
+function editForm(){
+    var options = document.querySelectorAll('#bookEditSelect option');
+    options.forEach(function(option){
+       option.addEventListener('click', function(e){
+           document.querySelector('#bookEdit').style.display = 'block';
+           var id = option.value;
+           getBookToEdit(id);
+       });
+    });
+}
+function getBookToEdit(id){
+    $.get('http://localhost/Bookstore/rest/rest.php/book/' + id, function (data){
+        var title = data.success[0]['title']; 
+        var description = data.success[0]['description'];
+        var author = data.success[0]['author']['name'] +' '+ data.success[0]['author']['surname'];
+        var author_id = data.success[0]['author']['id']; 
+        
+        var bookEdit = document.querySelector('#bookEdit');
+        bookEdit.querySelector('#title').value = title;
+        bookEdit.querySelector('#description').value = description;
+        
+        var optionsAuthor = bookEdit.querySelectorAll('#author_id_edit option');
+        
+        optionsAuthor.forEach(function(singleAuthor){ 
+            if (singleAuthor.value === author_id){
+                singleAuthor.selected = 'true';
+            }
+        });
+        
+    });
+}
+function authorEdit(singleAuthor){
+    var editList = document.querySelector('#author_id_edit').appendChild(document.createElement('option'));
+    editList.innerHTML += singleAuthor.name + ' ' + singleAuthor.surname; 
+    editList.value = singleAuthor.id; 
 }
 document.addEventListener('DOMContentLoaded', function()
 {
