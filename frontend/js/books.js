@@ -17,13 +17,44 @@ function bookAdd(singleBook)
                     '    </div>' +
                     '</li>';
     var list = document.querySelector('#booksList');
-    list.innerHTML += newBook;
-    
+    list.innerHTML += newBook;  
+}
+function addForm(form){
+    form.addEventListener('submit', function(e){
+        e.preventDefault(); 
+        var title = form.querySelector('#title').value;
+        var author_id = $('#author_id option:selected')[0].value;
+        var description = form.querySelector('#description').value;
+        
+        $.post('http://localhost/Bookstore/rest/rest.php/book', {
+            title: title, 
+            author_id: author_id,
+            description: description 
+            
+        });
+    });      
 }
 document.addEventListener('DOMContentLoaded', function()
 {
-    //load books 
     var form = document.querySelector('#bookAdd'); 
+    addForm(form);
+    form.addEventListener('submit', function(e)
+    {
+        e.preventDefault(); 
+
+        $.get("http://localhost/Bookstore/rest/rest.php/book", function(data)
+        {
+            var bookList = data.success;
+            console.log(bookList);
+            bookList.forEach(function(singleBook)
+            {
+               bookAdd(singleBook); 
+               
+            });
+        }); 
+    });
+    //load books 
+    
     $.get("http://localhost/Bookstore/rest/rest.php/book", function(data)
         {
             var bookList = data.success;
@@ -152,31 +183,6 @@ document.addEventListener('DOMContentLoaded', function()
             }
         });
         //add book 
-    form.addEventListener('submit', function(e)
-    {
- 
-        e.preventDefault(); 
-        var title = form.querySelector('#title').value;
-        var author = $('#author_id option:selected').val();
-        var description = form.querySelector('#description').value;
-
-
-        $.post('http://localhost/Bookstore/rest/rest.php/book', {
-            title: title, 
-            author_id: author,
-            description: description 
-            
-        });
-
-        $.get("http://localhost/Bookstore/rest/rest.php/book", function(data)
-        {
-            var bookList = data.success;
-            bookList.forEach(function(singleBook)
-            {
-               bookAdd(singleBook); 
-               
-            });
-        }); 
-    });
+    
     
 }); 
