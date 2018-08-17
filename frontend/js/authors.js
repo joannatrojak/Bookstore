@@ -15,105 +15,110 @@ function authorAdd(singleAuthor)
     var list = document.querySelector('#authorsList'); 
     list.innerHTML += newAuthor; 
 }
-document.addEventListener('DOMContentLoaded', function()
-{
-    //load authors 
-    var authorAddElement = document.querySelector('#authorAdd'); 
-    var authorListElement = document.querySelector('#authorsList'); 
-    console.log(authorListElement); 
-    $.get('http://localhost/Bookstore/rest/rest.php/author', function(data)
-        {
-            var authorList = data.success; 
-            authorList.forEach(function(singleAuthor)
-            {
-                authorAdd(singleAuthor);  
-                var option = document.createElement('option'); 
-                var authorname = singleAuthor['name']; 
-                var authorsurname = singleAuthor['surname']; 
-                var authorid = singleAuthor['id']; 
-                var author = authorname + " " + authorsurname; 
-                var select = document.querySelector('select').appendChild(option); 
-                select.value = authorid; 
-                select.innerHTML += author; 
-            });
-            //author edit selected 
-            var optionSearch = document.querySelectorAll('select'); 
-            
-            for (var i = 0; i<optionSearch.length; i++)
-            {
-                var elementToEdit = optionSearch[i]; 
-                
-                elementToEdit.addEventListener('click', function(e)
-                {
-                    var value = $('#authorEditSelect option:selected').val(); 
-                    
-                    $.get('http://localhost/Bookstore/rest/rest.php/author/' + value, function(data)
-                    {
-                        var id = data.success[0]['id']; 
-                        var name = data.success[0]['name']; 
-                        var surname = data.success[0]['surname']; 
-                        var authorEdit = $('#authorEdit').show(); 
-                        
-                        document.getElementById('id').value = id; 
-                    }); 
-                }); 
-            }
-            //show author's books
-            var infobutton = $('.panel-heading button:nth-child(3)');
-            for (var i = 0; i< infobutton.length; i++)
-            {
-                infobutton[i].addEventListener('click', function (e) {
-                    var id = this.getAttribute('data-id');
-                    $.get('http://localhost/Bookstore/rest/rest.php/author/' + id, function(data)
-                    {
-                        var authorBooksList = document.querySelector('.authorBooksList');
-                        console.log(authorBooksList);
-                        var books = data.success[0]['books'];
-                        books.forEach(function (singleBook) {
-                            var title = singleBook['title'];
-                            var li = document.createElement('li');
-                            var list = authorBooksList.appendChild(li);
-                            list.innerHTML += title;
-                            authorBooksList.style.display = "block";
-                        });
-
-                    });
-                })
-            }
-            //delete Author 
-            var deleteAuthor = $('.panel-heading button:nth-child(2)');
-            var domElement = document.querySelectorAll('.list-group-item');
-            for (var i = 0; i< deleteAuthor.length; i++)
-            {
-                deleteAuthor[i].addEventListener('click', function(e)
-                {
-                    var id = this.getAttribute('data-id');
-                    var elementToDelete = domElement[id - 1]; 
-                    elementToDelete.remove(); 
-                    
-                    $.ajax({
-                        url: 'http://localhost/Bookstore/rest/rest.php/author/' + id, 
-                        type: "DELETE", 
-                        success: function(data)
-                        {
-                            console.log(data['success']); 
-                        }
-                    }); 
-                }); 
-            }
-        }); 
-        //add author 
-    authorAddElement.addEventListener('submit', function(e)
-    {
-        e.preventDefault(); 
-        
-        var name = authorAdd.querySelector('#name').value; 
-        var surname = authorAdd.querySelector('#surname').value; 
-        
-        $.post('http://localhost/Bookstore/rest/rest.php/author', 
-        {
+function addForm(){
+    var form = document.querySelector('#authorAdd'); 
+    form.addEventListener('submit', function(e){
+        e.preventDefault();
+        var name = form.querySelector('#name').value;
+        var surname = form.querySelector('#surname').value;
+        $.post('http://localhost/Bookstore/rest/rest.php/author', {
             name: name, 
             surname: surname
-        }); 
-    }); 
+        });
+    });
+}
+function getAuthor(){
+    $.get('http://localhost/Bookstore/rest/rest.php/author', function(data){
+        var authorList = data.success; 
+        authorList.forEach(function(singleAuthor){
+           authorAdd(singleAuthor); 
+           authorEdit(singleAuthor);
+        });
+        editForm();
+        getAuthorInfo();
+        deleteAuthor();
+        
+    });
+}
+function authorEdit(singleAuthor){
+    var authorList = document.querySelector('#authorEditSelect').appendChild(document.createElement('option'));
+    authorList.innerHTML += singleAuthor.name + ' ' + singleAuthor.surname;
+    authorList.value = singleAuthor.id; 
+}
+function editForm(){
+    var options = document.querySelectorAll('#authorEditSelect option');
+    options.forEach(function(option){
+        option.addEventListener('click', function(e){
+           document.querySelector('#authorEdit').style.display = 'block';
+           var id = option.value;
+           getAuthorToEdit(id);
+        });
+    });
+}
+function getAuthorToEdit(id){
+    $.get('http://localhost/Bookstore/rest/rest.php/author/' + id, function(data){
+        var name = data.success[0]['name']; 
+        var surname = data.success[0]['surname'];
+        
+        var authorEdit = document.querySelector('#authorEdit');
+        authorEdit.querySelector('#name').value = name;
+        authorEdit.querySelector('#surname').value = surname;
+        
+        authorEdit.addEventListener('submit', function(e){
+            e.preventDefault();
+            var name = authorEdit.querySelector('#name').value;
+            var surname = authorEdit.querySelector('#surname').value;
+            
+            $.ajax({
+                url: 'http://localhost/Bookstore/rest/rest.php/author/' + id, 
+                type: 'PATCH',
+                dataType: 'json',
+                data: {id: id, name: name, surname: surname},
+                success: function(data){
+                    getAuthor();
+                }
+            });
+        });
+        
+    });
+}
+function getAuthorInfo(){
+    var info = document.querySelectorAll('.btn-book-show-description'); 
+    
+    info.forEach(function(singleInfo){
+        singleInfo.addEventListener('click', function(e){
+            var id = this.getAttribute('data-id');
+            var list = singleInfo.parentNode.parentNode.children[1]; 
+            $.get('http://localhost/Bookstore/rest/rest.php/author/' + id, function(data){
+                var bookList = data.success[0]['books'];
+                bookList.forEach(function(book){
+                    booksList = list.appendChild(document.createElement('li'));
+                    booksList.innerHTML = book.title;
+                    list.style.display = 'block';
+                });
+            });
+        });
+    });
+}
+function deleteAuthor(){
+    var deleteButton = document.querySelectorAll('.btn-author-remove');
+    deleteButton.forEach(function(button){
+        button.addEventListener('click', function(e){
+            var id = this.getAttribute('data-id');
+            $.ajax({
+                url: 'http://localhost/Bookstore/rest/rest.php/author/' + id,
+                type: 'DELETE', 
+                success: function(data){
+                    if (data['success'] == 'deleted'){
+                        getAuthor();
+                    }
+                }
+            });
+        });
+    });
+}
+document.addEventListener('DOMContentLoaded', function()
+{
+    addForm();
+    getAuthor();
 }); 

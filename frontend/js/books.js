@@ -42,6 +42,8 @@ function getBooks(){
                editAuthor(singleBook);
             });
             editForm();
+            getBookInfo();
+            deleteBook();
         }); 
 }
 function authorAdd(singleAuthor){
@@ -93,6 +95,23 @@ function getBookToEdit(id){
                 singleAuthor.selected = 'true';
             }
         });
+        bookEdit.addEventListener('submit', function(event){
+            event.preventDefault();
+            var title = bookEdit.querySelector('#title').value; 
+            var description = bookEdit.querySelector('#description').value;
+            var author_id = $('#author_id_edit option:selected').val(); 
+            
+            $.ajax({
+                url: 'http://localhost/Bookstore/rest/rest.php/book/' + id, 
+                type: 'PATCH',
+                dataType: 'json',
+                data: {id: id, title: title, description: description, author_id: author_id},
+                success: function(data){
+                    getBooks();
+                }
+            });
+            
+        });
         
     });
 }
@@ -100,6 +119,37 @@ function authorEdit(singleAuthor){
     var editList = document.querySelector('#author_id_edit').appendChild(document.createElement('option'));
     editList.innerHTML += singleAuthor.name + ' ' + singleAuthor.surname; 
     editList.value = singleAuthor.id; 
+}
+function getBookInfo(){
+   var info = document.querySelectorAll('.btn-book-show-description');
+   
+   info.forEach(function(singleInfo){
+       singleInfo.addEventListener('click', function(e){
+           var id = this.getAttribute('data-id');
+           var descriptionPanel = singleInfo.parentNode.parentNode.children[1];
+           $.get('http://localhost/Bookstore/rest/rest.php/book/' + id, function(data){
+               var description = data.success[0]['description'];
+               descriptionPanel.style.display = 'block';
+           });
+       });
+   });
+}
+function deleteBook(){
+    var deleteButton = document.querySelectorAll('.btn-book-remove');
+    deleteButton.forEach(function(button){
+        button.addEventListener('click', function(e){
+            var id = this.getAttribute('data-id');
+            $.ajax({
+                url: 'http://localhost/Bookstore/rest/rest.php/book/' + id, 
+                type: 'DELETE', 
+                success: function(data){
+                    if (data['success'] == 'deleted'){
+                        getBooks();
+                    }
+                }
+            });
+        });
+    });
 }
 document.addEventListener('DOMContentLoaded', function()
 {
